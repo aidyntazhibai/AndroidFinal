@@ -15,7 +15,7 @@ AralBank Shop is the shopping component of the AralBank mobile application. This
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/aralbank/aralbank-shop.git
+   git clone https://github.com/aidyntazhibai/AndroidFinal
 
 
 ## Requirements
