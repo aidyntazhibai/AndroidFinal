@@ -7,7 +7,6 @@ AralBank Shop is the shopping component of the AralBank mobile application. This
 - **Secure Shopping**: Uses the latest security protocols to keep customer data safe.
 - **Integrated Payments**: Easily pay with your AralBank account or linked payment methods.
 - **Wishlist**: Save items to purchase later.
-- **Product Recommendations**: AI-powered recommendations based on user preferences.
 - **Order Tracking**: Track orders in real time.
 
 ## Installation
