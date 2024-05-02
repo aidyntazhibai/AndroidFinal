@@ -32,3 +32,10 @@ AralBank Shop is the shopping component of the AralBank mobile application. This
 ## License
 
 - **This project is licensed under the KBTU License. See the LICENSE file for more details.**:
+
+## Authors
+
+project owners:
+-Tazhibay Aidyn
+-Amalbek Dinmukhammed
+-Nooloudy
