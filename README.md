@@ -20,15 +20,15 @@ AralBank Shop is the shopping component of the AralBank mobile application. This
 
 ## Requirements
 
-- **Android Studio 4.0 or later
-- **Gradle 6.1 or later
-- **Android SDK 21 or later
+- **Android Studio 4.0 or later**:
+- **Gradle 6.1 or later**:
+- **Android SDK 21 or later**:
 
 
 ## Contributing
 
-- **We welcome contributions from the community. Please submit pull requests or raise issues as necessary.
+- **We welcome contributions from the community. Please submit pull requests or raise issues as necessary.**:
 
 ## License
 
-- **This project is licensed under the KBTU License. See the LICENSE file for more details.
+- **This project is licensed under the KBTU License. See the LICENSE file for more details.**:
