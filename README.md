@@ -35,6 +35,6 @@ AralBank Shop is the shopping component of the AralBank mobile application. This
 ## Authors
 
 project owners:
-**Tazhibay Aidyn**
-**Amalbek Dinmukhammed**
-and  **Nooloudy**
+**Tazhibay Aidyn,**
+**Amalbek Dinmukhammed,**
+and  **Nooloudy.**
