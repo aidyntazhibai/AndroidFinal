@@ -2,7 +2,7 @@
     <string name="app_name">Online Shop</string>
     <string name="shop">Магазин</string>
     <string name="like">Избранное</string>
-    <string name="catalog">Католог</string>
+    <string name="catalog">Каталог</string>
     <string name="basket">Корзина</string>
     <string name="orders">Мои заказы</string>
     <!-- TODO: Remove or change this placeholder text -->
