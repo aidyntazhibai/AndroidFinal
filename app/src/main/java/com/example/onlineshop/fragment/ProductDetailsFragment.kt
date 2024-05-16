@@ -1,54 +1,92 @@
 package com.example.onlineshop.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.onlineshop.R
 import com.example.onlineshop.databinding.FragmentProductDetailsBinding
 import com.example.onlineshop.models.Product
 
 class ProductDetailsFragment : Fragment() {
 
-    private var _binding: FragmentProductDetailsBinding? = null
-    private val binding get() = _binding!!
-    private lateinit var product: Product
+    private lateinit var binding: FragmentProductDetailsBinding
+    private var product: Product? = null
+    private var isFavorite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            product = it.getParcelable(ARG_PRODUCT)!!
-        }
+        product = arguments?.getParcelable(ARG_PRODUCT)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
+    ): View {
+        binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        displayProductDetails()
+
+        binding.buttonBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
+        product?.let { product ->
+            binding.textViewTitle.text = product.title
+            binding.textViewPrice.text = getString(R.string.product_price, product.price)
+            binding.textViewDescription.text = product.description
+            binding.textViewCategory.text = product.category
+            binding.textViewDiscount.text = getString(R.string.product_discount, product.discountPercentage)
+            binding.textViewRating.text = getString(R.string.product_rating, product.rating)
+            binding.textViewStock.text = getString(R.string.product_stock, product.stock)
+            binding.textViewBrand.text = product.brand
+
+            Glide.with(requireContext())
+                .load(product.images.firstOrNull())
+                .into(binding.imageViewProduct)
+
+            // Проверяем, находится ли продукт в избранном
+            val sharedPreferences = requireContext().getSharedPreferences("favorites", Context.MODE_PRIVATE)
+            val favoriteIds = sharedPreferences.getStringSet("favorites", mutableSetOf()) ?: mutableSetOf()
+            isFavorite = favoriteIds.contains(product.id.toString())
+
+            updateFavoriteIcon()
+
+            binding.buttonFavorite.setOnClickListener {
+                isFavorite = !isFavorite
+                updateFavoriteIcon()
+                handleFavorite(product, isFavorite)
+            }
+        }
     }
 
-    private fun displayProductDetails() {
-        binding.textViewTitle.text = product.title
-        binding.textViewPrice.text = product.price.toString()
-        binding.textViewDescription.text = product.description
-        binding.textViewCategory.text = product.category.name
-
-        Glide.with(this)
-            .load(product.images.firstOrNull())
-            .into(binding.imageViewProduct)
+    private fun updateFavoriteIcon() {
+        if (isFavorite) {
+            binding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
+        } else {
+            binding.buttonFavorite.setImageResource(R.drawable.ic_favorite_border)
+        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun handleFavorite(product: Product, isFavorite: Boolean) {
+        val sharedPreferences = requireContext().getSharedPreferences("favorites", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val favorites = sharedPreferences.getStringSet("favorites", mutableSetOf()) ?: mutableSetOf()
+
+        if (isFavorite) {
+            favorites.add(product.id.toString())
+        } else {
+            favorites.remove(product.id.toString())
+        }
+
+        editor.putStringSet("favorites", favorites)
+        editor.apply()
     }
 
     companion object {

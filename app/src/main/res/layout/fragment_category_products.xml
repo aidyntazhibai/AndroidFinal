@@ -8,14 +8,24 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Favorite"
+        android:text="Products"
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginBottom="16dp"/>
+    <Button
+        android:id="@+id/buttonBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_margin="16dp"
+        android:background="?attr/selectableItemBackground"
+        android:textColor="@android:color/black"
+        android:backgroundTint="@color/colorPrimary"
+        android:padding="8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewFavorites"
+        android:id="@+id/recyclerViewCategoryProducts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </LinearLayout>

@@ -11,8 +11,12 @@ data class Product(
     @SerializedName("price") val price: Int,
     @SerializedName("description") val description: String,
     @SerializedName("images") val images: List<String>,
-    @SerializedName("category") val category: Category
-
+    @SerializedName("category") val category: String,
+    @SerializedName("discountPercentage") val discountPercentage: Double,
+    @SerializedName("rating") val rating: Double,
+    @SerializedName("stock") val stock: Int,
+    @SerializedName("brand") val brand: String,
+    @SerializedName("thumbnail") val thumbnail: String
 ) : Parcelable
 
 

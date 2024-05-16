@@ -1,19 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.CatalogFragment">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCategories"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Categories"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewProducts"
+    <Button
+        android:id="@+id/buttonSmartphones"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:text="Smartphones"
+        android:layout_marginBottom="8dp"/>
 
-</FrameLayout>
+    <Button
+        android:id="@+id/buttonLaptops"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Laptops"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/buttonFragrances"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fragrances"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/buttonSkincare"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Skincare"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/buttonGroceries"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Groceries"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/buttonHomeDecoration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Home Decoration"
+        android:layout_marginBottom="8dp"/>
+</LinearLayout>

@@ -8,11 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ApiService {
     val retrofit: Retrofit by lazy{
         Retrofit.Builder()
-            .baseUrl("https://api.escuelajs.co/api/v1/")
+            .baseUrl("https://dummyjson.com/")
             .addConverterFactory(GsonConverterFactory.create())
-            .client(OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            }).build())
             .build()
     }
 }
