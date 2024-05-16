@@ -1,52 +1,63 @@
 package com.example.onlineshop.fragment
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.onlineshop.R
 import com.example.onlineshop.adapter.ProductAdapter
 import com.example.onlineshop.api.ApiService
 import com.example.onlineshop.api.ProductService
-import com.example.onlineshop.databinding.FragmentShopBinding
+import com.example.onlineshop.databinding.FragmentCategoryDetailsBinding
 import com.example.onlineshop.models.Product
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class ShopFragment : Fragment(), ProductAdapter.ProductClickListener {
+class CategoryDetailsFragment : Fragment(), ProductAdapter.ProductClickListener {
 
-    private var _binding: FragmentShopBinding? = null
+    private var _binding: FragmentCategoryDetailsBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var productAdapter: ProductAdapter
+    private var categoryId: Int = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            categoryId = it.getInt(ARG_CATEGORY_ID)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentShopBinding.inflate(inflater, container, false)
-        val view = binding.root
-
-        binding.recyclerViewProducts.layoutManager = LinearLayoutManager(requireContext())
-        productAdapter = ProductAdapter(emptyList(), this)
-        binding.recyclerViewProducts.adapter = productAdapter
-
-        loadProducts()
-
-        return view
+    ): View? {
+        _binding = FragmentCategoryDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        productAdapter = ProductAdapter(emptyList(), this)
+
+        binding.recyclerViewProducts.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = productAdapter
+        }
+
+        loadProducts()
+    }
+
     private fun loadProducts() {
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 val productService = ApiService.retrofit.create(ProductService::class.java)
                 val products = productService.getProducts()
-                productAdapter.updateProducts(products)
+                val filteredProducts = products.filter { it.category.id == categoryId }
+                productAdapter.updateProducts(filteredProducts)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -64,5 +75,17 @@ class ShopFragment : Fragment(), ProductAdapter.ProductClickListener {
             .replace(R.id.fragment, fragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    companion object {
+        private const val ARG_CATEGORY_ID = "category_id"
+
+        @JvmStatic
+        fun newInstance(categoryId: Int) =
+            CategoryDetailsFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_CATEGORY_ID, categoryId)
+                }
+            }
     }
 }

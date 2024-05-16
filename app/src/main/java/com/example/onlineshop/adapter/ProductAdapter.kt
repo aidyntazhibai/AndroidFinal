@@ -1,3 +1,5 @@
+package com.example.onlineshop.adapter
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.onlineshop.R
 import com.example.onlineshop.models.Product
 
-class ProductAdapter(private var products: List<Product>) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+class ProductAdapter(private var products: List<Product>, private val listener: ProductClickListener) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_product, parent, false)
@@ -29,7 +31,7 @@ class ProductAdapter(private var products: List<Product>) : RecyclerView.Adapter
         notifyDataSetChanged()
     }
 
-    class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val titleTextView: TextView = itemView.findViewById(R.id.textViewTitle)
         private val priceTextView: TextView = itemView.findViewById(R.id.textViewPrice)
         private val descriptionTextView: TextView = itemView.findViewById(R.id.textViewDescription)
@@ -43,6 +45,14 @@ class ProductAdapter(private var products: List<Product>) : RecyclerView.Adapter
             Glide.with(itemView.context)
                 .load(product.images.firstOrNull())
                 .into(imageView)
+
+            itemView.setOnClickListener {
+                listener.onProductClick(product)
+            }
         }
+    }
+
+    interface ProductClickListener {
+        fun onProductClick(product: Product)
     }
 }

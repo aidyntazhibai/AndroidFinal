@@ -1,15 +1,12 @@
 package com.example.onlineshop
 
-import ProductAdapter
-import ShopFragment
+import com.example.onlineshop.fragment.CatalogFragment
+import com.example.onlineshop.fragment.ShopFragment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.onlineshop.api.ApiService
 import com.example.onlineshop.databinding.ActivityMainBinding
 import com.example.onlineshop.fragment.BasketFragment
-import com.example.onlineshop.fragment.CatalogFragment
 import com.example.onlineshop.fragment.LikeFragment
 import com.example.onlineshop.fragment.OrderFragment
 

@@ -1,3 +1,5 @@
+package com.example.onlineshop.adapter
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,11 +10,15 @@ import com.bumptech.glide.Glide
 import com.example.onlineshop.R
 import com.example.onlineshop.models.Category
 
-class CategoryAdapter(private val categories: List<Category>) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+class CategoryAdapter(private var categories: List<Category>, private val listener: CategoryClickListener) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false)
         return CategoryViewHolder(view)
+    }
+
+    override fun getItemCount(): Int {
+        return categories.size
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
@@ -20,19 +26,29 @@ class CategoryAdapter(private val categories: List<Category>) : RecyclerView.Ada
         holder.bind(category)
     }
 
-    override fun getItemCount(): Int {
-        return categories.size
+    fun updateCategories(newCategories: List<Category>) {
+        categories = newCategories
+        notifyDataSetChanged()
     }
 
-    class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val nameTextView: TextView = itemView.findViewById(R.id.textViewName)
+    inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val titleTextView: TextView = itemView.findViewById(R.id.textViewCategoryName)
         private val imageView: ImageView = itemView.findViewById(R.id.imageViewCategory)
 
         fun bind(category: Category) {
-            nameTextView.text = category.name
+            titleTextView.text = category.name
+
             Glide.with(itemView.context)
                 .load(category.image)
                 .into(imageView)
+
+            itemView.setOnClickListener {
+                listener.onCategoryClick(category)
+            }
         }
+    }
+
+    interface CategoryClickListener {
+        fun onCategoryClick(category: Category)
     }
 }
