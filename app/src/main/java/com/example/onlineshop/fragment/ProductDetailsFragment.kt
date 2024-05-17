@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
 import com.example.onlineshop.R
+import com.example.onlineshop.adapter.ProductImagesAdapter
 import com.example.onlineshop.databinding.FragmentProductDetailsBinding
+import com.example.onlineshop.manager.BasketManager
 import com.example.onlineshop.models.Product
 
 class ProductDetailsFragment : Fragment() {
@@ -47,11 +49,14 @@ class ProductDetailsFragment : Fragment() {
             binding.textViewStock.text = getString(R.string.product_stock, product.stock)
             binding.textViewBrand.text = product.brand
 
-            Glide.with(requireContext())
-                .load(product.images.firstOrNull())
-                .into(binding.imageViewProduct)
+            val adapter = ProductImagesAdapter(product.images)
+            binding.viewPagerProductImages.adapter = adapter
 
-            // Проверяем, находится ли продукт в избранном
+            binding.buttonAddToCart.setOnClickListener {
+                BasketManager.addToBasket(product)
+                Toast.makeText(requireContext(), "Добавлено в корзину", Toast.LENGTH_SHORT).show()
+            }
+
             val sharedPreferences = requireContext().getSharedPreferences("favorites", Context.MODE_PRIVATE)
             val favoriteIds = sharedPreferences.getStringSet("favorites", mutableSetOf()) ?: mutableSetOf()
             isFavorite = favoriteIds.contains(product.id.toString())

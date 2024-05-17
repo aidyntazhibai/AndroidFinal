@@ -15,11 +15,9 @@ import com.example.onlineshop.adapter.ProductAdapter
 import com.example.onlineshop.api.ApiService
 import com.example.onlineshop.api.ProductService
 import com.example.onlineshop.models.Product
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ShopFragment : Fragment(), ProductAdapter.ProductClickListener {
 

@@ -1,26 +1,63 @@
 package com.example.onlineshop.fragment
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.onlineshop.R
+import com.example.onlineshop.adapter.ProductAdapter
+import com.example.onlineshop.api.ApiService
+import com.example.onlineshop.api.ProductService
 import com.example.onlineshop.databinding.FragmentBasketBinding
+import com.example.onlineshop.manager.BasketManager
+import com.example.onlineshop.models.Product
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class BasketFragment : Fragment() {
+class BasketFragment : Fragment(), ProductAdapter.ProductClickListener {
 
+    private lateinit var binding: FragmentBasketBinding
+    private lateinit var productAdapter: ProductAdapter
+    private val basketProducts = mutableListOf<Product>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val binding = FragmentBasketBinding.inflate(inflater)
+    ): View {
+        binding = FragmentBasketBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    companion object {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        productAdapter = ProductAdapter(basketProducts, this)
+        binding.recyclerViewBasket.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewBasket.adapter = productAdapter
+
+        loadBasketProducts()
+    }
+
+    private fun loadBasketProducts() {
+        basketProducts.clear()
+        basketProducts.addAll(BasketManager.getBasket())
+        productAdapter.notifyDataSetChanged()
+    }
+
+    companion object {
         @JvmStatic
         fun newInstance() = BasketFragment()
+    }
+
+    override fun onProductClick(product: Product) {
+        val fragment = ProductDetailsFragment.newInstance(product)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

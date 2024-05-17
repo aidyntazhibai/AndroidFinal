@@ -39,12 +39,12 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <ImageView
-                        android:id="@+id/imageViewProduct"
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewPagerProductImages"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:scaleType="centerCrop"
-                        android:layout_marginBottom="16dp" />
+                        android:layout_height="300dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@android:color/black" />
 
                     <ImageButton
                         android:id="@+id/buttonFavorite"
@@ -119,6 +119,15 @@
                         android:textSize="16sp"
                         android:textColor="@android:color/darker_gray"
                         android:layout_marginBottom="8dp" />
+
+                    <Button
+                        android:id="@+id/buttonAddToCart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Добавить в корзину"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:textColor="@android:color/white"
+                        android:layout_marginTop="16dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </ScrollView>
