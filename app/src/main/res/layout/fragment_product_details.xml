@@ -87,7 +87,6 @@
                         android:textSize="16sp"
                         android:textColor="@android:color/darker_gray"
                         android:layout_marginBottom="8dp" />
-
                     <TextView
                         android:id="@+id/textViewDiscount"
                         android:layout_width="match_parent"
