@@ -6,15 +6,37 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <TextView
+        android:id="@+id/tvPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:layout_marginTop="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Manage Products"
-        android:textAppearance="?android:textAppearanceLarge" />
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textStyle="bold"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update Products"
+        android:textSize="20dp"
+        android:textStyle="italic"/>
     <EditText
-        android:id="@+id/editTextNewName"
+        android:id="@+id/editUpdateOldProductName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -35,7 +57,7 @@
         android:layout_marginTop="16dp"
         android:visibility="gone" />
     <EditText
-        android:id="@+id/editTextNewProductName"
+        android:id="@+id/editUpdateNewProductName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="New Product Name"
@@ -48,5 +70,41 @@
         android:text="Send Request"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete Products"
+        android:textSize="20dp"
+        android:textStyle="italic"/>
+
+    <EditText
+        android:id="@+id/editDeleteProductName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Product" />
+
+    <ImageButton
+        android:id="@+id/imageButtonSelectProductToDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/arrow_down_float"
+        android:contentDescription="Select product"
+        android:layout_marginTop="16dp" />
+    <ListView
+        android:id="@+id/listViewProductsToDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="gone" />
+    <Button
+        android:id="@+id/buttonDeleteRequest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Request"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp" />
+
+
 
 </LinearLayout>

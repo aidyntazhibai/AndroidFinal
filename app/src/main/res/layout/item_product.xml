@@ -15,35 +15,43 @@
 
         <ImageView
             android:id="@+id/imageViewProduct"
-            android:layout_width="match_parent"
+            android:layout_width="350dp"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
             android:layout_marginBottom="8dp"
-            />
+            android:scaleType="centerCrop" />
+
+
 
         <TextView
             android:id="@+id/textViewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
             android:layout_marginBottom="4dp"
-            android:textColor="@android:color/black"/>
-
-        <TextView
-            android:id="@+id/textViewPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@android:color/holo_red_dark"
-            android:layout_marginBottom="4dp"/>
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textViewDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
             android:layout_marginBottom="4dp"
-            android:textColor="@android:color/darker_gray"/>
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textViewPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/rounded_corners"
+
+            android:text="@string/product_price"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+
+
+
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -7,12 +7,13 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.database.*
 import com.example.onlineshop.R
 
-
 class PersonalAdminFragment : Fragment() {
 
     private lateinit var listViewProducts: ListView
-    private lateinit var editTextNewName: EditText
-    private lateinit var editTextNewProductName: EditText
+    private lateinit var listViewDeleteProducts: ListView
+    private lateinit var editUpdateOldProductName: EditText
+    private lateinit var editUpdateNewProductName: EditText
+    private lateinit var editDeleteProductName: EditText
     private lateinit var databaseReference: DatabaseReference
     private var selectedProductName: String? = null
 
@@ -23,10 +24,14 @@ class PersonalAdminFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_personal_admin, container, false)
 
         listViewProducts = view.findViewById(R.id.listViewProducts)
-        editTextNewName = view.findViewById(R.id.editTextNewName)
-        editTextNewProductName = view.findViewById(R.id.editTextNewProductName)
+        listViewDeleteProducts = view.findViewById(R.id.listViewProductsToDelete)
+        editUpdateOldProductName = view.findViewById(R.id.editUpdateOldProductName)
+        editUpdateNewProductName = view.findViewById(R.id.editUpdateNewProductName)
+        editDeleteProductName = view.findViewById(R.id.editDeleteProductName)
         val buttonSelectProduct = view.findViewById<ImageButton>(R.id.imageButtonSelectProduct)
-        val buttonSendRequest = view.findViewById<Button>(R.id.buttonSendRequest)
+        val buttonSelectProductToDelete = view.findViewById<ImageButton>(R.id.imageButtonSelectProductToDelete)
+        val buttonSendUpdateRequest = view.findViewById<Button>(R.id.buttonSendRequest)
+        val buttonSendDeleteRequest = view.findViewById<Button>(R.id.buttonDeleteRequest)
 
         databaseReference = FirebaseDatabase.getInstance().getReference("products")
 
@@ -36,12 +41,24 @@ class PersonalAdminFragment : Fragment() {
             listViewProducts.visibility = View.VISIBLE
         }
 
-        buttonSendRequest.setOnClickListener {
-            val newName = editTextNewProductName.text.toString().trim()
+        buttonSelectProductToDelete.setOnClickListener {
+            listViewDeleteProducts.visibility = View.VISIBLE
+        }
+
+        buttonSendUpdateRequest.setOnClickListener {
+            val newName = editUpdateNewProductName.text.toString().trim()
             if (newName.isNotEmpty() && selectedProductName != null) {
                 updateProductNameInDatabase(selectedProductName!!, newName)
             } else {
                 Toast.makeText(requireContext(), "Please select a product and enter a new name", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        buttonSendDeleteRequest.setOnClickListener {
+            selectedProductName?.let { productName ->
+                deleteProductFromDatabase(productName)
+            } ?: run {
+                Toast.makeText(requireContext(), "Please select a product to delete", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -62,17 +79,28 @@ class PersonalAdminFragment : Fragment() {
 
                 val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, productNames)
                 listViewProducts.adapter = adapter
+                listViewDeleteProducts.adapter = adapter
 
                 listViewProducts.onItemClickListener =
                     AdapterView.OnItemClickListener { _, _, position, _ ->
                         val selectedProductName = productNames[position]
-                        editTextNewName.setText(selectedProductName)
+                        editUpdateOldProductName.setText(selectedProductName)
                         listViewProducts.visibility = View.GONE
                         this@PersonalAdminFragment.selectedProductName = selectedProductName
                     }
+
+                listViewDeleteProducts.onItemClickListener =
+                    AdapterView.OnItemClickListener { _, _, position, _ ->
+                        val selectedProductName = productNames[position]
+                        editDeleteProductName.setText(selectedProductName)
+                        listViewDeleteProducts.visibility = View.GONE
+                        this@PersonalAdminFragment.selectedProductName = selectedProductName
+                    }
+
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
+                // Handle onCancelled event
             }
         })
     }
@@ -88,6 +116,23 @@ class PersonalAdminFragment : Fragment() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
+                // Handle onCancelled event
+            }
+        })
+    }
+
+    private fun deleteProductFromDatabase(productName: String) {
+        val productQuery: Query = databaseReference.orderByChild("title").equalTo(productName)
+        productQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    snapshot.ref.removeValue()
+                }
+                Toast.makeText(requireContext(), "Product deleted successfully", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle onCancelled event
             }
         })
     }

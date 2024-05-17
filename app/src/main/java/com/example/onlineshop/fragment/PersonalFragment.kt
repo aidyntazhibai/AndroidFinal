@@ -10,7 +10,7 @@ import com.example.onlineshop.databinding.FragmentPersonalBinding
 
 class PersonalFragment : Fragment() {
 
-    private var _binding: FragmentPersonalBinding? = null
+    private  var _binding: FragmentPersonalBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
