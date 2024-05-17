@@ -1,60 +1,78 @@
-package com.example.onlineshop.fragment
-
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
+import androidx.fragment.app.Fragment
+import com.google.firebase.database.*
 import com.example.onlineshop.R
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PersonalAdminFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PersonalAdminFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var listViewProducts: ListView
+    private lateinit var editTextNewName: EditText
+    private lateinit var databaseReference: DatabaseReference
+    private var selectedProductName: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_personal_admin, container, false)
+        val view = inflater.inflate(R.layout.fragment_personal_admin, container, false)
+
+        listViewProducts = view.findViewById(R.id.listViewProducts)
+        editTextNewName = view.findViewById(R.id.editTextNewName)
+        val buttonSelectProduct = view.findViewById<ImageButton>(R.id.imageButtonSelectProduct)
+        val buttonSendRequest = view.findViewById<Button>(R.id.buttonSendRequest)
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("products")
+
+        loadProductNamesFromDatabase()
+
+        buttonSelectProduct.setOnClickListener {
+            listViewProducts.visibility = View.VISIBLE
+        }
+
+        buttonSendRequest.setOnClickListener {
+            selectedProductName?.let { newName ->
+                updateProductNameInDatabase(newName)
+            }
+        }
+
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PersonalAdminFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PersonalAdminFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun loadProductNamesFromDatabase() {
+        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val productNames = mutableListOf<String>()
+
+                for (snapshot in dataSnapshot.children) {
+                    val productName = snapshot.child("title").getValue(String::class.java)
+                    productName?.let {
+                        productNames.add(it)
+                    }
                 }
+
+                val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, productNames)
+                listViewProducts.adapter = adapter
+
+                listViewProducts.onItemClickListener =
+                    AdapterView.OnItemClickListener { _, _, position, _ ->
+                        val selectedProductName = productNames[position]
+                        editTextNewName.setText(selectedProductName)
+                        listViewProducts.visibility = View.GONE
+                        this@PersonalAdminFragment.selectedProductName = selectedProductName
+                    }
             }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
+    }
+
+    private fun updateProductNameInDatabase(newName: String) {
+        Toast.makeText(requireContext(), "Request sent to update product name to '$newName'", Toast.LENGTH_SHORT).show()
     }
 }

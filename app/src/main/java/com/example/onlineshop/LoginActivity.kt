@@ -1,6 +1,7 @@
 package com.example.onlineshop
 
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -27,21 +28,25 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
-
         binding.btnLogin.setOnClickListener {
-            val email = binding.etEmail.text.toString()
-            val password = binding.etPassword.text.toString()
+            val email = binding.etEmail.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        if (email == adminEmail && password == adminPassword) {
-                            val intent = Intent(this, AdminActivity::class.java)
-                            startActivity(intent)
+                        val sharedPref = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE)
+                        val editor = sharedPref.edit()
+                        editor.putString("email", email)
+                        editor.putString("password", password)
+                        editor.apply()
+
+                        val intent = if (email == adminEmail && password == adminPassword) {
+                            Intent(this, AdminActivity::class.java)
                         } else {
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
+                            Intent(this, MainActivity::class.java)
                         }
+                        startActivity(intent)
                     } else {
                         Toast.makeText(this, it.exception?.message ?: "Authentication failed", Toast.LENGTH_SHORT).show()
                     }
@@ -50,6 +55,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Empty Fields Are not Allowed !!", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
 }
 
