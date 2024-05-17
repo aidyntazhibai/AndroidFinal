@@ -25,6 +25,7 @@ class CatalogFragment : Fragment() {
 
         binding.buttonSmartphones.setOnClickListener {
             navigateToCategory("smartphones")
+            binding.buttonSmartphones.setBackgroundResource(R.drawable.phone_category)
         }
 
         binding.buttonLaptops.setOnClickListener {

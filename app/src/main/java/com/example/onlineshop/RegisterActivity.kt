@@ -11,6 +11,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
     private lateinit var firebaseAuth: FirebaseAuth
+//    private val db: FirebaseFireStore
 
     private lateinit var binding: ActivityRegisterBinding
 
@@ -31,6 +32,7 @@ class RegisterActivity : AppCompatActivity() {
                 firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
 
                     if (it.isSuccessful) {
+
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
 
