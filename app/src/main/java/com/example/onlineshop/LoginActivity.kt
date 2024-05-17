@@ -13,6 +13,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
+    private val adminEmail = "admin@kbtu.kz"
+    private val adminPassword = "adminn"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,22 +32,24 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
 
-            if (email.isNotEmpty() && password.isNotEmpty()){
-
+            if (email.isNotEmpty() && password.isNotEmpty()) {
                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
+                        if (email == adminEmail && password == adminPassword) {
+                            val intent = Intent(this, AdminActivity::class.java)
+                            startActivity(intent)
+                        } else {
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                        }
                     } else {
-                        Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, it.exception?.message ?: "Authentication failed", Toast.LENGTH_SHORT).show()
                     }
                 }
-
             } else {
                 Toast.makeText(this, "Empty Fields Are not Allowed !!", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
-
 }
+

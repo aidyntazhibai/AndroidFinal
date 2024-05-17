@@ -59,9 +59,6 @@ class LikeFragment : Fragment(), ProductAdapter.ProductClickListener {
         }
     }
 
-
-
-
     override fun onProductClick(product: Product) {
         val fragment = ProductDetailsFragment.newInstance(product)
         parentFragmentManager.beginTransaction()
