@@ -12,6 +12,7 @@ class PersonalAdminFragment : Fragment() {
 
     private lateinit var listViewProducts: ListView
     private lateinit var editTextNewName: EditText
+    private lateinit var editTextNewProductName: EditText
     private lateinit var databaseReference: DatabaseReference
     private var selectedProductName: String? = null
 
@@ -23,6 +24,7 @@ class PersonalAdminFragment : Fragment() {
 
         listViewProducts = view.findViewById(R.id.listViewProducts)
         editTextNewName = view.findViewById(R.id.editTextNewName)
+        editTextNewProductName = view.findViewById(R.id.editTextNewProductName)
         val buttonSelectProduct = view.findViewById<ImageButton>(R.id.imageButtonSelectProduct)
         val buttonSendRequest = view.findViewById<Button>(R.id.buttonSendRequest)
 
@@ -35,8 +37,11 @@ class PersonalAdminFragment : Fragment() {
         }
 
         buttonSendRequest.setOnClickListener {
-            selectedProductName?.let { newName ->
-                updateProductNameInDatabase(newName)
+            val newName = editTextNewProductName.text.toString().trim()
+            if (newName.isNotEmpty() && selectedProductName != null) {
+                updateProductNameInDatabase(selectedProductName!!, newName)
+            } else {
+                Toast.makeText(requireContext(), "Please select a product and enter a new name", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -72,7 +77,18 @@ class PersonalAdminFragment : Fragment() {
         })
     }
 
-    private fun updateProductNameInDatabase(newName: String) {
-        Toast.makeText(requireContext(), "Request sent to update product name to '$newName'", Toast.LENGTH_SHORT).show()
+    private fun updateProductNameInDatabase(oldName: String, newName: String) {
+        val productQuery: Query = databaseReference.orderByChild("title").equalTo(oldName)
+        productQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    snapshot.ref.child("title").setValue(newName)
+                }
+                Toast.makeText(requireContext(), "Product name updated successfully", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
     }
 }

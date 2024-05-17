@@ -6,22 +6,20 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- TextView для отображения заголовка -->
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Manage Products"
         android:textAppearance="?android:textAppearanceLarge" />
 
-    <!-- EditText для ввода нового названия продукта -->
     <EditText
         android:id="@+id/editTextNewName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Enter new product name" />
+        android:hint="Old Product Name" />
 
-    <!-- ImageButton для выбора продукта из списка -->
     <ImageButton
         android:id="@+id/imageButtonSelectProduct"
         android:layout_width="wrap_content"
@@ -30,15 +28,19 @@
         android:contentDescription="Select product"
         android:layout_marginTop="16dp" />
 
-    <!-- ListView для отображения списка продуктов -->
     <ListView
         android:id="@+id/listViewProducts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:visibility="gone" />
+    <EditText
+        android:id="@+id/editTextNewProductName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="New Product Name"
+        android:layout_marginTop="16dp"/>
 
-    <!-- Button для отправки запроса на обновление продукта -->
     <Button
         android:id="@+id/buttonSendRequest"
         android:layout_width="wrap_content"
