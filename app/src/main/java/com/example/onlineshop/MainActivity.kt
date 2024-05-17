@@ -1,14 +1,14 @@
 package com.example.onlineshop
 
 import com.example.onlineshop.fragment.CatalogFragment
-import com.example.onlineshop.fragment.ShopFragment
+import ShopFragment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.onlineshop.databinding.ActivityMainBinding
 import com.example.onlineshop.fragment.BasketFragment
 import com.example.onlineshop.fragment.LikeFragment
-import com.example.onlineshop.fragment.OrderFragment
+import com.example.onlineshop.fragment.PersonalFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.shop -> replaceFragment(ShopFragment())
                 R.id.catalog -> replaceFragment(CatalogFragment())
                 R.id.like -> replaceFragment(LikeFragment())
-                R.id.orders -> replaceFragment(OrderFragment())
+                R.id.orders -> replaceFragment(PersonalFragment())
                 R.id.basket -> replaceFragment(BasketFragment())
 
                 else -> {

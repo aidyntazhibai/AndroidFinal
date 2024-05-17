@@ -12,6 +12,7 @@ import com.example.onlineshop.api.ApiService
 import com.example.onlineshop.api.ProductService
 import com.example.onlineshop.databinding.FragmentCategoryProductsBinding
 import com.example.onlineshop.models.Product
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -52,17 +53,18 @@ class CategoryProductsFragment : Fragment(), ProductAdapter.ProductClickListener
     private fun loadProductsByCategory(category: String?) {
         if (category == null) return
 
-        GlobalScope.launch(Dispatchers.Main) {
-            try {
-                val productService = ApiService.retrofit.create(ProductService::class.java)
-                val response = productService.getProducts()
-                val products = response.products.filter { it.category == category }
-                productAdapter.updateProducts(products)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+        val database = FirebaseDatabase.getInstance()
+        val productsRef = database.getReference("products")
+
+        productsRef.get().addOnSuccessListener { dataSnapshot ->
+            val allProducts = dataSnapshot.children.mapNotNull { it.getValue(Product::class.java) }
+            val products = allProducts.filter { it.category == category }
+            productAdapter.updateProducts(products)
+        }.addOnFailureListener { e ->
+            e.printStackTrace()
         }
     }
+
 
     override fun onProductClick(product: Product) {
         val fragment = ProductDetailsFragment.newInstance(product)

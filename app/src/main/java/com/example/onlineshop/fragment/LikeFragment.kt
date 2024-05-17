@@ -13,6 +13,7 @@ import com.example.onlineshop.api.ApiService
 import com.example.onlineshop.api.ProductService
 import com.example.onlineshop.databinding.FragmentLikeBinding
 import com.example.onlineshop.models.Product
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -43,23 +44,23 @@ class LikeFragment : Fragment(), ProductAdapter.ProductClickListener {
     }
 
     private fun loadFavoriteProducts() {
-        GlobalScope.launch(Dispatchers.Main) {
-            try {
-                val productService = ApiService.retrofit.create(ProductService::class.java)
-                val response = productService.getProducts()
-                val allProducts = response.products
+        val sharedPreferences = requireContext().getSharedPreferences("favorites", Context.MODE_PRIVATE)
+        val favoriteIds = sharedPreferences.getStringSet("favorites", mutableSetOf()) ?: mutableSetOf()
 
-                val sharedPreferences = requireContext().getSharedPreferences("favorites", Context.MODE_PRIVATE)
-                val favoriteIds = sharedPreferences.getStringSet("favorites", mutableSetOf()) ?: mutableSetOf()
+        val database = FirebaseDatabase.getInstance()
+        val productsRef = database.getReference("products")
 
-                favoriteProducts.clear()
-                favoriteProducts.addAll(allProducts.filter { it.id.toString() in favoriteIds })
-                productAdapter.notifyDataSetChanged()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+        productsRef.get().addOnSuccessListener { dataSnapshot ->
+            val allProducts = dataSnapshot.children.mapNotNull { it.getValue(Product::class.java) }
+            val allFavoriteProducts = allProducts.filter { it.id.toString() in favoriteIds }
+            productAdapter.updateProducts(allFavoriteProducts)
+        }.addOnFailureListener { e ->
+            e.printStackTrace()
         }
     }
+
+
+
 
     override fun onProductClick(product: Product) {
         val fragment = ProductDetailsFragment.newInstance(product)

@@ -1,5 +1,3 @@
-package com.example.onlineshop.fragment
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,9 +10,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.appcompat.widget.SearchView
 import com.example.onlineshop.R
 import com.example.onlineshop.adapter.ProductAdapter
-import com.example.onlineshop.api.ApiService
-import com.example.onlineshop.api.ProductService
+import com.example.onlineshop.fragment.ProductDetailsFragment
 import com.example.onlineshop.models.Product
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -25,7 +27,7 @@ class ShopFragment : Fragment(), ProductAdapter.ProductClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var searchView: SearchView
-    private var allProducts: List<Product> = emptyList()
+    private var allProducts: MutableList<Product> = mutableListOf() // Используем MutableList для обновления списка продуктов
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +44,7 @@ class ShopFragment : Fragment(), ProductAdapter.ProductClickListener {
         recyclerView.adapter = productAdapter
 
         swipeRefreshLayout.setOnRefreshListener {
-            loadProducts()
+            loadProductsFromFirebase()
         }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -56,27 +58,32 @@ class ShopFragment : Fragment(), ProductAdapter.ProductClickListener {
             }
         })
 
-        loadProducts()
+        loadProductsFromFirebase()
 
         return view
     }
 
-    private fun loadProducts() {
-        swipeRefreshLayout.isRefreshing = true
-        GlobalScope.launch(Dispatchers.Main) {
-            try {
-                val productService = ApiService.retrofit.create(ProductService::class.java)
-                val response = productService.getProducts()
-                allProducts = response.products
-                Log.d("ShopFragment", "Loaded products: $allProducts")
+    private fun loadProductsFromFirebase() {
+        val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().reference.child("products")
+
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                allProducts.clear()
+                for (productSnapshot in snapshot.children) {
+                    val product = productSnapshot.getValue(Product::class.java)
+                    product?.let {
+                        allProducts.add(it)
+                    }
+                }
                 productAdapter.updateProducts(allProducts)
                 swipeRefreshLayout.isRefreshing = false
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Log.e("ShopFragment", "Error loading products", e)
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("ShopFragment", "Error loading products from Firebase", error.toException())
+
                 swipeRefreshLayout.isRefreshing = false
             }
-        }
+        })
     }
 
     private fun filterProducts(query: String?) {
