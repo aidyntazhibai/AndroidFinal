@@ -23,7 +23,9 @@
         android:textColor="@color/black"
         android:text="Smartphones"
         android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
-        android:drawableLeft="@drawable/icons7">
+        android:drawableLeft="@drawable/icons1"
+        android:textSize="20dp"
+        android:textAlignment="textStart">
 
 
     </Button>
@@ -35,8 +37,10 @@
             android:backgroundTint="@color/white"
             android:textColor="@color/black"
             android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
-            android:drawableLeft="@drawable/icons8"
-            android:text="Laptops" />
+            android:drawableLeft="@drawable/icons2"
+            android:text="Laptops"
+            android:textSize="20dp"
+            android:textAlignment="textStart"/>
 
 
 
@@ -47,9 +51,10 @@
             android:backgroundTint="@color/white"
             android:textColor="@color/black"
             android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
-            android:drawableLeft="@drawable/icons9"
-
-            android:text="Fragrances" />
+            android:drawableLeft="@drawable/icons3"
+            android:textSize="20dp"
+            android:text="Fragrances"
+            android:textAlignment="textStart"/>
 
         <Button
             android:id="@+id/buttonSkincare"
@@ -57,9 +62,11 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
-            android:drawableLeft="@drawable/icons10"
+            android:drawableLeft="@drawable/icons4"
             android:textColor="@color/black"
             android:text="Skincare"
+            android:textSize="20dp"
+            android:textAlignment="textStart"
             />
 
 
@@ -71,8 +78,10 @@
             android:backgroundTint="@color/white"
             android:textColor="@color/black"
             android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
-            android:drawableLeft="@drawable/icons11"
+            android:drawableLeft="@drawable/icons5"
             android:text="Groceries"
+            android:textSize="20dp"
+            android:textAlignment="textStart"
             />
 
         <Button
@@ -85,6 +94,7 @@
             android:textColor="@color/black"
             android:textSize="20dp"
             android:text="Home Decoration"
+            android:textAlignment="textStart"
             />
 
 

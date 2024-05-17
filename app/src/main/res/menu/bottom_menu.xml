@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/shop"
-        android:icon="@drawable/shop"
+        android:icon="@drawable/icon_shop"
         android:title="@string/shop"
         android:orderInCategory="1"
 
@@ -11,7 +11,7 @@
 
     <item
         android:id="@+id/catalog"
-        android:icon="@drawable/shop"
+        android:icon="@drawable/icon_catalog"
         android:title="@string/catalog"
         android:orderInCategory="2"
 
@@ -19,7 +19,7 @@
 
     <item
         android:id="@+id/like"
-        android:icon="@drawable/shop"
+        android:icon="@drawable/icon_like"
         android:title="@string/like"
         android:orderInCategory="3"
 
@@ -27,7 +27,7 @@
 
     <item
         android:id="@+id/basket"
-        android:icon="@drawable/shop"
+        android:icon="@drawable/icon_basket"
         android:title="@string/basket"
         android:orderInCategory="4"
 
@@ -35,7 +35,7 @@
 
     <item
         android:id="@+id/orders"
-        android:icon="@drawable/shop"
+        android:icon="@drawable/icon_user"
         android:title="@string/orders"
         android:orderInCategory="5"
 
