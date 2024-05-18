@@ -1,12 +1,15 @@
 package com.example.onlineshop.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.onlineshop.LoginActivity
 import com.example.onlineshop.databinding.FragmentPersonalBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class PersonalFragment : Fragment() {
     private var _binding: FragmentPersonalBinding? = null
@@ -29,6 +32,23 @@ class PersonalFragment : Fragment() {
 
         binding.tvEmail.text = "email: $email"
         binding.tvPassword.text = "password: $password"
+
+        binding.buttonLogout.setOnClickListener {
+            logout()
+        }
+    }
+
+    private fun logout() {
+        val sharedPref = activity?.getSharedPreferences("MySharedPref", Context.MODE_PRIVATE)
+        val editor = sharedPref?.edit()
+        editor?.clear()
+        editor?.apply()
+
+        FirebaseAuth.getInstance().signOut()
+
+        val intent = Intent(activity, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 
     override fun onDestroyView() {

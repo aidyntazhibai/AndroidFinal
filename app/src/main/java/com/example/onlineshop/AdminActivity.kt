@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.onlineshop.databinding.ActivityMainBinding
 import com.example.onlineshop.fragment.BasketFragment
 import com.example.onlineshop.fragment.LikeFragment
-import PersonalAdminFragment
+import com.example.onlineshop.fragment.PersonalAdminFragment
 
 
 class AdminActivity : AppCompatActivity() {

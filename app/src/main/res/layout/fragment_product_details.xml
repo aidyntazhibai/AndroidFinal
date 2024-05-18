@@ -10,28 +10,28 @@
         tools:context=".fragment.ProductDetailsFragment"
         android:background="@android:color/white">
 
-        <Button
-            android:id="@+id/buttonBack"
-            android:layout_width="wrap_content"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Назад"
-            android:layout_margin="16dp"
-            android:background="?attr/selectableItemBackground"
-            android:textColor="@android:color/black"
-            android:backgroundTint="@color/colorPrimary"
-            android:padding="8dp" />
+            android:background="#03DAC5"
+            android:theme="?attr/actionBarTheme"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="Product Details"
+            app:titleTextColor="@android:color/white" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp">
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@android:color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -43,8 +43,14 @@
                         android:id="@+id/viewPagerProductImages"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
+                        android:layout_marginBottom="16dp" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupImages"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:background="@android:color/black" />
+                        android:gravity="center"/>
 
                     <ImageButton
                         android:id="@+id/buttonFavorite"
@@ -53,7 +59,8 @@
                         android:src="@drawable/ic_favorite_border"
                         android:background="?attr/selectableItemBackground"
                         android:layout_gravity="end"
-                        android:layout_marginBottom="16dp" />
+                        android:layout_marginBottom="16dp"
+                        app:tint="?attr/colorPrimary" />
 
                     <TextView
                         android:id="@+id/textViewTitle"
@@ -62,7 +69,8 @@
                         android:textSize="24sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/black"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="sans-serif-medium" />
 
                     <TextView
                         android:id="@+id/textViewPrice"
@@ -70,7 +78,8 @@
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
                         android:textColor="@android:color/holo_red_dark"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="sans-serif" />
 
                     <TextView
                         android:id="@+id/textViewDescription"
@@ -78,7 +87,8 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:textColor="@android:color/darker_gray"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="sans-serif" />
 
                     <TextView
                         android:id="@+id/textViewCategory"
@@ -86,7 +96,8 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:textColor="@android:color/darker_gray"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="sans-serif" />
 
                     <TextView
                         android:id="@+id/textViewDiscount"
@@ -94,7 +105,8 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:textColor="@android:color/darker_gray"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="sans-serif" />
 
                     <TextView
                         android:id="@+id/textViewRating"
@@ -102,7 +114,8 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:textColor="@android:color/darker_gray"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="sans-serif" />
 
                     <TextView
                         android:id="@+id/textViewStock"
@@ -110,7 +123,8 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:textColor="@android:color/darker_gray"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="sans-serif" />
 
                     <TextView
                         android:id="@+id/textViewBrand"
@@ -118,16 +132,18 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:textColor="@android:color/darker_gray"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="sans-serif" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/buttonAddToCart"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Добавить в корзину"
-                        android:backgroundTint="@color/colorPrimary"
+                        android:text="Add to Cart"
+                        android:backgroundTint="#03DAC5"
                         android:textColor="@android:color/white"
-                        android:layout_marginTop="16dp" />
+                        android:layout_marginTop="16dp"
+                        app:cornerRadius="8dp" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view"
@@ -136,7 +152,7 @@
                         android:layout_marginTop="16dp"/>
 
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </ScrollView>
     </LinearLayout>

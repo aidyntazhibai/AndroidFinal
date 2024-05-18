@@ -1,4 +1,7 @@
+package com.example.onlineshop.fragment
+
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.example.onlineshop.R
+import com.example.onlineshop.LoginActivity
 
 class PersonalAdminFragment : Fragment() {
 
@@ -38,6 +42,7 @@ class PersonalAdminFragment : Fragment() {
         val buttonSelectProductToDelete = view.findViewById<ImageButton>(R.id.imageButtonSelectProductToDelete)
         val buttonSendUpdateRequest = view.findViewById<Button>(R.id.buttonSendRequest)
         val buttonSendDeleteRequest = view.findViewById<Button>(R.id.buttonDeleteRequest)
+        val buttonLogout = view.findViewById<ImageButton>(R.id.buttonLogout)
 
         databaseReference = FirebaseDatabase.getInstance().getReference("products")
 
@@ -68,6 +73,10 @@ class PersonalAdminFragment : Fragment() {
             } ?: run {
                 Toast.makeText(requireContext(), "Please select a product to delete", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        buttonLogout.setOnClickListener {
+            logout()
         }
 
         return view
@@ -154,5 +163,18 @@ class PersonalAdminFragment : Fragment() {
                 // Handle onCancelled event
             }
         })
+    }
+
+    private fun logout() {
+        val sharedPref = activity?.getSharedPreferences("MySharedPref", Context.MODE_PRIVATE)
+        val editor = sharedPref?.edit()
+        editor?.clear()
+        editor?.apply()
+
+        FirebaseAuth.getInstance().signOut()
+
+        val intent = Intent(activity, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 }

@@ -13,7 +13,7 @@
     <string name="product_stock">Stock: %d</string>
     <string name="product_brand">Brand: %s</string>
 
-
+    <string name="logout">Logout</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>

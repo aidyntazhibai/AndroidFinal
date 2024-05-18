@@ -8,15 +8,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.onlineshop.R
 import com.example.onlineshop.adapter.ProductAdapter
-import com.example.onlineshop.api.ApiService
-import com.example.onlineshop.api.ProductService
 import com.example.onlineshop.databinding.FragmentCategoryProductsBinding
 import com.example.onlineshop.models.Product
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-
 
 class CategoryProductsFragment : Fragment(), ProductAdapter.ProductClickListener {
 
@@ -45,7 +39,8 @@ class CategoryProductsFragment : Fragment(), ProductAdapter.ProductClickListener
         binding.recyclerViewCategoryProducts.adapter = productAdapter
 
         loadProductsByCategory(category)
-        binding.buttonBack.setOnClickListener {
+
+        binding.topAppBar.setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }
     }
@@ -64,7 +59,6 @@ class CategoryProductsFragment : Fragment(), ProductAdapter.ProductClickListener
             e.printStackTrace()
         }
     }
-
 
     override fun onProductClick(product: Product) {
         val fragment = ProductDetailsFragment.newInstance(product)

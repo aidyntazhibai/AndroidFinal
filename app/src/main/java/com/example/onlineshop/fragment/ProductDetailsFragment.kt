@@ -1,6 +1,5 @@
 package com.example.onlineshop.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,9 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.onlineshop.R
 import com.example.onlineshop.adapter.ProductAdapter
 import com.example.onlineshop.adapter.ProductImagesAdapter
@@ -20,7 +16,6 @@ import com.example.onlineshop.models.Product
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.launch
 
 class ProductDetailsFragment : Fragment(), ProductAdapter.ProductClickListener {
 
@@ -50,7 +45,7 @@ class ProductDetailsFragment : Fragment(), ProductAdapter.ProductClickListener {
         database = FirebaseDatabase.getInstance()
         productsRef = database.getReference("products")
 
-        binding.buttonBack.setOnClickListener {
+        binding.topAppBar.setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
@@ -114,10 +109,12 @@ class ProductDetailsFragment : Fragment(), ProductAdapter.ProductClickListener {
     }
 
     private fun updateFavoriteIcon() {
-        if (isFavorite) {
-            binding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
-        } else {
-            binding.buttonFavorite.setImageResource(R.drawable.ic_favorite_border)
+        if (_binding != null) {
+            if (isFavorite) {
+                binding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
+            } else {
+                binding.buttonFavorite.setImageResource(R.drawable.ic_favorite_border)
+            }
         }
     }
 
