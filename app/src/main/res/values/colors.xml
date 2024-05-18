@@ -110,7 +110,7 @@
     <color name="lightCreamColor">#f0eed7</color>
     <color name="wheatColor">#f0eed7</color>
     <color name="beigeColor">#f5f5dc</color>
-
+    <color name="purple_500">#6200EE</color>
     <!-- Oranges -->
     <color name="peachColor">#f2bb61</color>
     <color name="burntOrangeColor">#b86625</color>
@@ -137,6 +137,11 @@
     <color name="hintColor">#1B1A1A</color>
     <color name="cart_image_red">#941616</color>
     <color name="cart_image_green">#608C2D</color>
+
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#757575</color>
+    <color name="cardBackgroundColor">#FFFFFF</color>
+    <color name="discountTextColor">#FF0000</color>
 
 
 

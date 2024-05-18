@@ -27,7 +27,7 @@ class ShopFragment : Fragment(), ProductAdapter.ProductClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var searchView: SearchView
-    private var allProducts: MutableList<Product> = mutableListOf() // Используем MutableList для обновления списка продуктов
+    private var allProducts: MutableList<Product> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

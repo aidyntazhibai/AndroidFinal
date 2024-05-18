@@ -9,8 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.onlineshop.databinding.FragmentPersonalBinding
 
 class PersonalFragment : Fragment() {
-
-    private  var _binding: FragmentPersonalBinding? = null
+    private var _binding: FragmentPersonalBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -28,8 +27,8 @@ class PersonalFragment : Fragment() {
         val email = sharedPref?.getString("email", "No Email")
         val password = sharedPref?.getString("password", "No Password")
 
-        binding.tvEmail.text = email
-        binding.tvPassword.text = password
+        binding.tvEmail.text = "email: $email"
+        binding.tvPassword.text = "password: $password"
     }
 
     override fun onDestroyView() {

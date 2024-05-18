@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Online Shop</string>
-    <string name="shop">Магазин</string>
-    <string name="like">Избранное</string>
-    <string name="catalog">Каталог</string>
-    <string name="basket">Корзина</string>
-    <string name="orders">Мои заказы</string>
+    <string name="shop">Shop</string>
+    <string name="like">Favorite</string>
+    <string name="catalog">Catalog</string>
+    <string name="basket">Cart</string>
+    <string name="orders">Personal Area</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="product_price">Price: $%d</string>
     <string name="product_category">Category: %s</string>

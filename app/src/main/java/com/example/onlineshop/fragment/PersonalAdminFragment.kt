@@ -1,9 +1,11 @@
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.example.onlineshop.R
 
@@ -14,6 +16,8 @@ class PersonalAdminFragment : Fragment() {
     private lateinit var editUpdateOldProductName: EditText
     private lateinit var editUpdateNewProductName: EditText
     private lateinit var editDeleteProductName: EditText
+    private lateinit var tvEmail: TextView
+    private lateinit var tvPassword: TextView
     private lateinit var databaseReference: DatabaseReference
     private var selectedProductName: String? = null
 
@@ -28,12 +32,16 @@ class PersonalAdminFragment : Fragment() {
         editUpdateOldProductName = view.findViewById(R.id.editUpdateOldProductName)
         editUpdateNewProductName = view.findViewById(R.id.editUpdateNewProductName)
         editDeleteProductName = view.findViewById(R.id.editDeleteProductName)
+        tvEmail = view.findViewById(R.id.tvEmail)
+        tvPassword = view.findViewById(R.id.tvPassword)
         val buttonSelectProduct = view.findViewById<ImageButton>(R.id.imageButtonSelectProduct)
         val buttonSelectProductToDelete = view.findViewById<ImageButton>(R.id.imageButtonSelectProductToDelete)
         val buttonSendUpdateRequest = view.findViewById<Button>(R.id.buttonSendRequest)
         val buttonSendDeleteRequest = view.findViewById<Button>(R.id.buttonDeleteRequest)
 
         databaseReference = FirebaseDatabase.getInstance().getReference("products")
+
+        displayUserCredentials()
 
         loadProductNamesFromDatabase()
 
@@ -63,6 +71,17 @@ class PersonalAdminFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun displayUserCredentials() {
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.let {
+            tvEmail.text = "email: ${it.email}"
+
+            val sharedPref = activity?.getSharedPreferences("MySharedPref", Context.MODE_PRIVATE)
+            val password = sharedPref?.getString("password", "No Password")
+            tvPassword.text = "password: $password"
+        }
     }
 
     private fun loadProductNamesFromDatabase() {

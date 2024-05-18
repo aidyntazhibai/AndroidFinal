@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.onlineshop.R
 import com.example.onlineshop.adapter.ProductAdapter
 import com.example.onlineshop.adapter.ProductImagesAdapter
-import com.example.onlineshop.api.ApiService
-import com.example.onlineshop.api.ProductService
 import com.example.onlineshop.databinding.FragmentProductDetailsBinding
 import com.example.onlineshop.manager.BasketManager
 import com.example.onlineshop.models.Product
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
@@ -29,8 +28,6 @@ class ProductDetailsFragment : Fragment(), ProductAdapter.ProductClickListener {
     private val binding get() = _binding!!
     private lateinit var database: FirebaseDatabase
     private lateinit var productsRef: DatabaseReference
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var productsAdapter: ProductAdapter
     private var product: Product? = null
     private var isFavorite: Boolean = false
 
@@ -50,10 +47,6 @@ class ProductDetailsFragment : Fragment(), ProductAdapter.ProductClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-
-        // Инициализация Firebase Realtime Database
         database = FirebaseDatabase.getInstance()
         productsRef = database.getReference("products")
 
@@ -69,10 +62,10 @@ class ProductDetailsFragment : Fragment(), ProductAdapter.ProductClickListener {
             }
         }
 
-        loadProductsFromFirebase()
+        loadProductFromFirebase()
     }
 
-    private fun loadProductsFromFirebase() {
+    private fun loadProductFromFirebase() {
         val productId = product?.id.toString()
         productsRef.child(productId).get().addOnSuccessListener { dataSnapshot ->
             val product = dataSnapshot.getValue(Product::class.java)
@@ -85,7 +78,6 @@ class ProductDetailsFragment : Fragment(), ProductAdapter.ProductClickListener {
             Toast.makeText(context, "Failed to load product details", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun bindProductDetails(product: Product) {
         binding.textViewTitle.text = product.title
@@ -102,15 +94,22 @@ class ProductDetailsFragment : Fragment(), ProductAdapter.ProductClickListener {
     }
 
     private fun setupFavoriteButton(product: Product) {
-        val sharedPreferences = requireContext().getSharedPreferences("favorites", Context.MODE_PRIVATE)
-        val favoriteIds = sharedPreferences.getStringSet("favorites", mutableSetOf()) ?: mutableSetOf()
-        isFavorite = favoriteIds.contains(product.id.toString())
-        updateFavoriteIcon()
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
+            binding.buttonFavorite.setImageResource(R.drawable.ic_favorite_border)
+            return
+        }
 
-        binding.buttonFavorite.setOnClickListener {
-            isFavorite = !isFavorite
+        val favoritesRef = FirebaseDatabase.getInstance().getReference("favorites").child(user.uid)
+        favoritesRef.child(product.id.toString()).get().addOnSuccessListener { dataSnapshot ->
+            isFavorite = dataSnapshot.exists()
             updateFavoriteIcon()
-            handleFavorite(product, isFavorite)
+
+            binding.buttonFavorite.setOnClickListener {
+                isFavorite = !isFavorite
+                updateFavoriteIcon()
+                handleFavorite(product, isFavorite)
+            }
         }
     }
 
@@ -123,23 +122,19 @@ class ProductDetailsFragment : Fragment(), ProductAdapter.ProductClickListener {
     }
 
     private fun handleFavorite(product: Product, isFavorite: Boolean) {
-        val sharedPreferences = requireContext().getSharedPreferences("favorites", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        val favorites = sharedPreferences.getStringSet("favorites", mutableSetOf()) ?: mutableSetOf()
+        val user = FirebaseAuth.getInstance().currentUser ?: return
+        val favoritesRef = FirebaseDatabase.getInstance().getReference("favorites").child(user.uid)
 
         if (isFavorite) {
-            favorites.add(product.id.toString())
+            favoritesRef.child(product.id.toString()).setValue(true)
         } else {
-            favorites.remove(product.id.toString())
+            favoritesRef.child(product.id.toString()).removeValue()
         }
-
-        editor.putStringSet("favorites", favorites)
-        editor.apply()
     }
 
     private fun addToBasket(product: Product) {
         BasketManager.addToBasket(product)
-        Toast.makeText(requireContext(), "Added to a cart", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "Added to cart", Toast.LENGTH_SHORT).show()
     }
 
     override fun onProductClick(product: Product) {

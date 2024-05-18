@@ -1,6 +1,5 @@
 package com.example.onlineshop.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,16 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.onlineshop.R
 import com.example.onlineshop.adapter.ProductAdapter
-import com.example.onlineshop.api.ApiService
-import com.example.onlineshop.api.ProductService
 import com.example.onlineshop.databinding.FragmentBasketBinding
 import com.example.onlineshop.manager.BasketManager
 import com.example.onlineshop.models.Product
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
-class BasketFragment : Fragment(), ProductAdapter.ProductClickListener {
+class BasketFragment : Fragment(), ProductAdapter.OnProductDeleteClickListener {
 
     private lateinit var binding: FragmentBasketBinding
     private lateinit var productAdapter: ProductAdapter
@@ -43,9 +37,16 @@ class BasketFragment : Fragment(), ProductAdapter.ProductClickListener {
     }
 
     private fun loadBasketProducts() {
-        basketProducts.clear()
-        basketProducts.addAll(BasketManager.getBasket())
-        productAdapter.notifyDataSetChanged()
+        BasketManager.getBasket(
+            onSuccess = { products ->
+                basketProducts.clear()
+                basketProducts.addAll(products)
+                productAdapter.notifyDataSetChanged()
+            },
+            onFailure = { exception ->
+                // Handle error
+            }
+        )
     }
 
     companion object {
@@ -59,5 +60,10 @@ class BasketFragment : Fragment(), ProductAdapter.ProductClickListener {
             .replace(R.id.fragment, fragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun onProductDeleteClick(product: Product) {
+        BasketManager.removeFromBasket(product)
+        loadBasketProducts() // Refresh the basket
     }
 }
